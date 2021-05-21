@@ -60,7 +60,10 @@ angular
         var checkExist = setInterval(function() {
 
            if (xx.prmFacetCtrl.facetService.results[0] && xx.prmFacetCtrl.facetService.results[0].name !="External Search") {
-              if (xx.prmFacetCtrl.facetService.results.name !== 'External Search') {
+              if (
+                xx.prmFacetCtrl.facetService.results.name !== 'External Search' &&
+                xx.prmFacetCtrl.$stateParams.search_scope == 'WorldCat'
+              ) {
                 xx.prmFacetCtrl.facetService.results.unshift({
                   name: 'External Search',
                   displayedType: 'exact',
