@@ -56,18 +56,43 @@ angular
         this.prmFacetCtrl = controller
       },
       addExtSearch: function addExtSearch() {
-        var self = this;
-        setTimeout(function(){ 
-          if (self.prmFacetCtrl.$stateParams.search_scope == 'WorldCat') {
-            self.prmFacetCtrl.facetService.results.unshift({
+        var extSearchIntervalCt = 0;
+        var ctrl = this.prmFacetCtrl;
+        addFacet();
+        var lastFacetCt = ctrl.facets.length;
+        var currentFacetCt;
+
+        var checkExist = setInterval(function() {
+          currentFacetCt = ctrl.facets.length;
+          if ( extSearchIntervalCt > 15 ) {
+            addFacet();
+            clearInterval(checkExist);
+          }
+
+          if ( lastFacetCt != currentFacetCt) {
+            addFacet();
+            clearInterval(checkExist);
+          }
+          
+           extSearchIntervalCt += 1;
+           lastFacetCt = currentFacetCt;
+
+        }, 500);
+
+        function addFacet(){
+          if ( 
+            ctrl.facets.length < 1 ||
+            ctrl.facets[0].name !== 'External Search' 
+            ) {
+            ctrl.facets.unshift({
               name: 'External Search',
               displayedType: 'exact',
               limitCount: 0,
               facetGroupCollapsed: false,
               values: undefined
-            })
+            });
           }
-         }, 1200);
+        }
       }
     }
   })
