@@ -1,6 +1,7 @@
 angular
   .module('externalSearch', [])
   .value('searchTargets', [])
+  .value('externalSearchText', "")
   .component('prmFacetAfter', {
       bindings: { parentCtrl: '<' },
       controller: ['externalSearch', function (externalSearch) {
@@ -22,6 +23,7 @@ angular
       template: '<div ng-if="name === \'External Search\'">\
           <div ng-hide="$ctrl.parentCtrl.facetGroup.facetGroupCollapsed">\
               <div class="section-content animate-max-height-variable">\
+                  <div ng-if="introText" id="external-search-intro">{{introText}}</div>\
                   <div class="md-chips md-chips-wrap">\
                       <div ng-repeat="target in targets" aria-live="polite" class="md-chip animate-opacity-and-scale facet-element-marker-local4">\
                           <div class="md-chip-content layout-row" role="button" tabindex="0">\
@@ -36,10 +38,11 @@ angular
               </div>\
           </div>\
       </div>',
-      controller: ['$scope', '$location', 'searchTargets', function ($scope, $location, searchTargets) {
+      controller: ['$scope', '$location', 'searchTargets', 'externalSearchText', function ($scope, $location, searchTargets, externalSearchText) {
         this.$onInit = function () {
           $scope.name = this.parentCtrl.facetGroup.name
           $scope.targets = searchTargets
+          $scope.introText = externalSearchText
           var query = $location.search().query
           var filter = $location.search().pfilter
           $scope.queries = Object.prototype.toString.call(query) === '[object Array]' ? query : query ? [query] : false
