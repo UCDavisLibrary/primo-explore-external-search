@@ -71,7 +71,7 @@ angular
             displayedType: 'exact',
             limitCount: 0,
             facetGroupCollapsed: false,
-            values: undefined
+            values: []
           });
         }
       }
